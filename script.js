@@ -5081,6 +5081,7 @@ const drawChart = (target) => {
     case "Number":
       typeValue = "radar";
       break;
+    default: typeValue = "line"; break;
   }
   new Chart( canva,
     {

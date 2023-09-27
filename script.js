@@ -1,4 +1,5 @@
-let canva = document.getElementById('context');
+
+
 let data = [
     {
       "Name": "Avery Bradley",
@@ -5029,13 +5030,14 @@ let data = [
     }
   ];
 
-const listPossible = target => Array.from( new Set(data.map(player => player[target])));
-const numbrePossibilityPer = target => {
-    let result = new Array(listPossible(target).length);
 
-    for (let index=0; index<listPossible(target).length; ++index) {
+const list = target => Array.from( new Set(data.map(player => player[target])));
+const numbrePossibilityPer = target => {
+    let result = new Array(list(target).length);
+
+    for (let index=0; index<list(target).length; ++index) {
         result[index] = data.reduce( (count, player) => {
-            if (player[target] === listPossible(target)[index])
+            if (player[target] === list(target)[index])
                 return count + 1;
             else return count;
         }, 0);
@@ -5044,23 +5046,86 @@ const numbrePossibilityPer = target => {
     return result;
 }
 
-const teamsList = listPossible("College");
-const numberPlayerPerTeam = numbrePossibilityPer("College");
-const agesList = listPossible("Position");
-const numberAgesNba = numbrePossibilityPer('Position');
+const drawHome = () => {
+  let welcome = document.createElement('welcome');
+  let help = document.createElement('help');
+  let titles = ["Name", "Team", "Number", "Position", "Age", "College"];
+  
+  document.body.append(welcome, help);
+  welcome.textContent = "Welcome to the NBA stat";
 
-for (let index=0; index<agesList.length; ++index)
-    console.log(agesList[index], numberAgesNba[index]);
+  titles.forEach( title => {
+    let btn = document.createElement('btn');
+    btn.textContent = title;
 
-new Chart( canva,
+    btn.addEventListener('click', () => {
+      drawChart(btn.textContent);
+    });
+    document.body.append(btn);
+  });
+  
+}
+const drawChart = (target) => {
+  let canva = document.createElement('canvas')
+  canva.setAttribute('id',"context")
+  let right = document.getElementById('right');
+  right.append(canva);
+
+  let xData = list(target);
+  let yData = numbrePossibilityPer(target);
+
+  let typeValue;
+
+  switch(target){
+    case "Age":
+      typeValue = "bar";
+      break;
+    
+    case "Position":
+      typeValue = "doughnut";
+      break;
+    
+    case "Team":
+      typeValue = "line";
+      break;
+
+    case "College":
+      typeValue = "pie";
+      break;
+      
+    case "Number":
+      typeValue = "radar";
+      break;
+  }
+  new Chart( canva,
     {
-        type: "bar",
-        data : {
-            labels: teamsList,
-            datasets: [ {
-                label: "NBA number player par team ",
-                data: numberPlayerPerTeam
-            }]
-        }
+      type: typeValue,
+      data : {
+        labels: xData,
+        datasets: [ {
+            label: target,
+            data: yData
+        }]
+      }
     }
-)
+  )
+}
+
+const destroy = () => {
+  let right = document.getElementById('right');
+  right.innerHTML = ""
+  let canvas = document.getElementById("context");
+  let chart = Chart.getChart(canvas); // Get the chart instance
+
+  if (chart) {
+    chart.destroy();
+    canvas.parentNode.removeChild(canvas); 
+  }
+
+}
+let btns = document.getElementsByClassName('btn');
+for(let i=0; i<btns.length;++i) {
+  btns[i].addEventListener('click', () => {
+    destroy();
+    drawChart(btns[i].textContent)});
+}

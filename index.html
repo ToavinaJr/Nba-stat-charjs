@@ -4,11 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
-    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./script.js" defer></script>
+    <title>NBA stat</title>
 </head>
 <body>
-    <canvas id="context"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <div id="left">
+        <div class="btn">Age</div>
+        <div class="btn">Team</div>
+        <div class="btn">Number</div>
+        <div class="btn">Position</div>
+        <div class="btn">College</div>
+    </div>
+    <div id="right">
+        <canvas id="context"></canvas>
+    </div>
 </body>
 </html>

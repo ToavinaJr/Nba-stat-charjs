@@ -5073,6 +5073,10 @@ const drawChart = (target) => {
     case "College":
       typeValue = "pie";
       break;
+    
+    case "Height":
+      typeValue = "radar";
+      break;
       
     case "Number":
       typeValue = "radar";

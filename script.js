@@ -5046,25 +5046,6 @@ const numbrePossibilityPer = target => {
     return result;
 }
 
-const drawHome = () => {
-  let welcome = document.createElement('welcome');
-  let help = document.createElement('help');
-  let titles = ["Name", "Team", "Number", "Position", "Age", "College"];
-  
-  document.body.append(welcome, help);
-  welcome.textContent = "Welcome to the NBA stat";
-
-  titles.forEach( title => {
-    let btn = document.createElement('btn');
-    btn.textContent = title;
-
-    btn.addEventListener('click', () => {
-      drawChart(btn.textContent);
-    });
-    document.body.append(btn);
-  });
-  
-}
 const drawChart = (target) => {
   let canva = document.createElement('canvas')
   canva.setAttribute('id',"context")
@@ -5103,7 +5084,7 @@ const drawChart = (target) => {
       data : {
         labels: xData,
         datasets: [ {
-            label: target,
+            label: "Number player",
             data: yData
         }]
       }
@@ -5111,9 +5092,10 @@ const drawChart = (target) => {
   )
 }
 
-const destroy = () => {
+const destroyCanva = () => {
   let right = document.getElementById('right');
   right.innerHTML = ""
+
   let canvas = document.getElementById("context");
   let chart = Chart.getChart(canvas); // Get the chart instance
 
@@ -5126,6 +5108,8 @@ const destroy = () => {
 let btns = document.getElementsByClassName('btn');
 for(let i=0; i<btns.length;++i) {
   btns[i].addEventListener('click', () => {
-    destroy();
+    destroyCanva();
     drawChart(btns[i].textContent)});
 }
+destroyCanva();
+drawChart('Age')

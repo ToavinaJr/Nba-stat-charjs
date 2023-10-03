@@ -1,5 +1,3 @@
-
-
 let data = [
     {
       "Name": "Avery Bradley",
@@ -5028,30 +5026,35 @@ let data = [
       "College": "Kansas",
       "Salary": "947276.0"
     }
-  ];
+];
 
+// fetch("./data.json")
+//     .then(res => res.json())
+//     .then(players => players.forEach( player => data.push(player)));;
 
 const list = target => Array.from( new Set(data.map(player => player[target])));
+
 const numbrePossibilityPer = target => {
-    let result = new Array(list(target).length);
+  let result = new Array(list(target).length);
 
-    for (let index=0; index<list(target).length; ++index) {
-        result[index] = data.reduce( (count, player) => {
-            if (player[target] === list(target)[index])
-                return count + 1;
-            else return count;
-        }, 0);
-    }
+  for (let index=0; index<list(target).length; ++index) {
+      result[index] = data.reduce( (count, player) => {
+          if (player[target] === list(target)[index])
+              return count + 1;
+          else return count;
+      }, 0);
+  }
 
-    return result;
+  return result;
 }
 
-const drawChart = (target) => {
+const drawChart = target => {
+  let right = document.getElementById('right');
   let canva = document.createElement('canvas')
   canva.setAttribute('id',"context")
-  let right = document.getElementById('right');
   right.append(canva);
 
+  
   let xData = list(target);
   let yData = numbrePossibilityPer(target);
 
@@ -5081,7 +5084,12 @@ const drawChart = (target) => {
     case "Number":
       typeValue = "radar";
       break;
-    default: typeValue = "line"; break;
+
+    case "Weight":
+      typeValue = "line";
+      break;
+
+    default: typeValue = "bar"; break;
   }
   new Chart( canva,
     {
@@ -5110,11 +5118,13 @@ const destroyCanva = () => {
   }
 
 }
+
 let btns = document.getElementsByClassName('btn');
+
 for(let i=0; i<btns.length;++i) {
   btns[i].addEventListener('click', () => {
     destroyCanva();
     drawChart(btns[i].textContent)});
 }
 destroyCanva();
-drawChart('Age')
+drawChart('Age');
